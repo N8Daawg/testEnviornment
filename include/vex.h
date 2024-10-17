@@ -6,6 +6,7 @@
 #include "v5.h"
 #include "v5_vcs.h"
 
+#include "structures.hpp"
 #include "robotSubsystems/robot.hpp"
 #include "game_elements/wallStake.hpp"
 

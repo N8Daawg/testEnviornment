@@ -1,4 +1,3 @@
-#include "structures.hpp"
 
 class wallStake
 {
