@@ -10,7 +10,10 @@
 using namespace vex;
 
 // define your global instances of motors and other devices here
+motor* FLPtr = &FrontLeft;
+motor* BLPtr = &BackLeft;
 
+robot thisRobot(FLPtr, BLPtr);
 
 int main() {
 
