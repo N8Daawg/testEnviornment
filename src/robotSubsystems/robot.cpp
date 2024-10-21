@@ -8,8 +8,8 @@ robot::robot(double x, double y)
     drive = driveTrain();
 }
 robot::robot(
-    motor* &FL,
-    motor* &BL
+    motor* FL,
+    motor* BL
     )
 {
     coords.x=0;
@@ -21,3 +21,7 @@ robot::~robot()
 {
 }
 
+void robot::driveFor(int distance)
+{
+    drive.driveFor(distance);
+}

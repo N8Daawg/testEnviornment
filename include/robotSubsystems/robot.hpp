@@ -14,10 +14,12 @@ private:
 public:
     robot(double x, double y);
     robot(
-        motor* &FL,
-        motor* &BL
+        motor* FL,
+        motor* BL
         );
     ~robot();
+
+    void driveFor(int distance);
 };
 
 #endif

@@ -7,8 +7,8 @@ using code = vision::code;
 
 brain Brain;
 
-motor FrontLeft = motor(PORT7, ratio18_1, true);
-motor BackLeft = motor(PORT8, ratio18_1, true);
+motor FrontLeft = motor(PORT1, ratio18_1, true);
+motor BackLeft = motor(PORT2, ratio18_1, true);
 
 void vexcodeInit(void) {
 

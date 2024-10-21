@@ -9,21 +9,24 @@
 
 using namespace vex;
 
-#ifndef DRIVETRAIN_HPP
-#define DRIVETRAIN_HPP
+#ifndef TWOWHEELSIDE_HPP
+#define TWOWHEELSIDE_HPP
 
-class driveTrain
+class twoWheelSide: public wheelSide
 {
 private:
-    motor* FL;
-    motor* BL;
+    motor* front;
+    motor* back;
+
 public:
-    driveTrain();
-    driveTrain(
-        motor* &FrontLeft,
-        motor* &BackLeft
-        );
-    ~driveTrain();
+    twoWheelSide(
+        motor* frontm,
+        motor* backm
+    );
+    ~twoWheelSide();
+
+    virtual void spinToWrap(double distance);
+    void test();
 };
 
 #endif
