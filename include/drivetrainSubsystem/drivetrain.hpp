@@ -18,7 +18,7 @@ private:
     motor* FL;
     motor* BL;
 
-    wheelSide leftSide;
+    wheelSide* leftSide;
 
 public:
     driveTrain();
@@ -28,7 +28,9 @@ public:
         );
     ~driveTrain();
 
-    void driveFor(double distance);
+    void driveFor(double rotation, double velocity);
+
+    void Spin(directionType dir, double velocity, velocityUnits units);
 };
 
 #endif

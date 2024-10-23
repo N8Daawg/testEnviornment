@@ -25,8 +25,8 @@ public:
     );
     ~twoWheelSide();
 
-    virtual void spinToWrap(double distance);
-    void test();
+    virtual void spinToWrap(double rotation, double velocity);
+    virtual void spinWrap(directionType dir, double velocity, velocityUnits units);
 };
 
 #endif

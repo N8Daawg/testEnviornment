@@ -10,14 +10,16 @@ twoWheelSide::twoWheelSide(
 }
 twoWheelSide::~twoWheelSide(){}
 
-void twoWheelSide::spinToWrap(double distance){
-        Brain.Screen.print("from sub class");
-    }
+/*---------------------------------------------------------------------------*/
+/*----------------------------DriveSide Movements----------------------------*/
+/*---------------------------------------------------------------------------*/
 
-void twoWheelSide::test(){
-    if(front->installed()){
-        Brain.Screen.print("front motor is installed");
-    } else {
-        Brain.Screen.print("front motor is not installed");
-    }
+void twoWheelSide::spinWrap(vex::directionType dir, double velocity, vex::velocityUnits units){
+    front->spin(dir, velocity, units);
+    back->spin(dir, velocity, units);
+}
+
+void twoWheelSide::spinToWrap(double rotation, double velocity){
+    front->spinTo(rotation, degrees, velocity, velocityUnits::pct);
+    back->spinTo(rotation, degrees, velocity, velocityUnits::pct);
 }

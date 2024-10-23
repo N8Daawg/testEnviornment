@@ -9,7 +9,7 @@ class robot
 {
 private:
     coordinate coords;
-    driveTrain drive;
+    driveTrain* drive;
 
 public:
     robot(double x, double y);
@@ -19,7 +19,8 @@ public:
         );
     ~robot();
 
-    void driveFor(int distance);
+    void driveFor(double rotaion, double velocity);
+    void Spin(directionType dir, double velocity, velocityUnits units);
 };
 
 #endif

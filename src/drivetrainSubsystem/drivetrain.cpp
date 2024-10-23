@@ -12,16 +12,19 @@ driveTrain::driveTrain(
 {
     FL = FrontLeft;
     BL = BackLeft;
-    leftSide = twoWheelSide(FrontLeft, BackLeft);
+    leftSide = new twoWheelSide(FrontLeft, BackLeft);
 }
 
 driveTrain::~driveTrain()
 {
 }
 
-void driveTrain::driveFor(double distance)
+void driveTrain::driveFor(double rotation, double velocity)
 {
-    leftSide.spinTo(distance);
-    //FL->spinTo(distance, degrees, false);
-    //BL->spinTo(distance, degrees, true);
+    leftSide->SpinTo(rotation, velocity);
+}
+
+void driveTrain::Spin(directionType dir, double velocity, velocityUnits units)
+{
+    leftSide->Spin(dir, velocity, units);
 }

@@ -18,6 +18,25 @@ robot thisRobot(FLPtr, BLPtr);
 
 twoWheelSide leftSide(FLPtr, BLPtr);
 
+class SuperClass 
+{
+public:
+    void bar() 
+    {
+        foo();
+    }
+private:
+    virtual void foo() // could be pure virtual, if you like
+    {
+        Brain.Screen.print("from superclass");
+    }
+};
+
+class SubClass : public SuperClass // do not forget to inherit public
+{
+public:
+    virtual void foo() { Brain.Screen.print("from subclass"); }
+};
 
 int main() {
     coordinate StakeCoords;
@@ -28,7 +47,9 @@ int main() {
     wallStake stake2(blueAlliance, StakeCoords);
 
     double distance = 50;
-
-    thisRobot.driveFor(distance);
-
+    double velocity = 75;
+    
+    while(true){
+        thisRobot.Spin(fwd, velocity, velocityUnits::pct);
+    }
 }

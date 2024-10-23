@@ -5,7 +5,7 @@ robot::robot(double x, double y)
 {
     coords.x = x;
     coords.y = y;
-    drive = driveTrain();
+    drive = new driveTrain();
 }
 robot::robot(
     motor* FL,
@@ -14,14 +14,19 @@ robot::robot(
 {
     coords.x=0;
     coords.y=0;
-    drive = driveTrain(FL, BL);
+    drive = new driveTrain(FL, BL);
 }
 
 robot::~robot()
 {
 }
 
-void robot::driveFor(int distance)
+void robot::driveFor(double rotaion, double velocity)
 {
-    drive.driveFor(distance);
+    drive->driveFor(rotaion, velocity);
+}
+
+void robot::Spin(directionType dir, double velocity, velocityUnits units)
+{
+    drive->Spin(dir, velocity, units);
 }
