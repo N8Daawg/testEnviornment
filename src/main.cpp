@@ -11,12 +11,14 @@ using namespace vex;
 
 
 // define your global instances of motors and other devices here
-motor* FLPtr = &FrontLeft;
-motor* BLPtr = &BackLeft;
+controller Controller;
 
-robot thisRobot(FLPtr, BLPtr);
+double robotlength = 0;
+double gearratio = 1;
+double wheelDiameter = 1;
 
-twoWheelSide leftSide(FLPtr, BLPtr);
+Robot robot(&FrontLeft, &FrontRight, &BackLeft, &BackRight, &Gyro, 
+            robotlength, gearratio, wheelDiameter);
 
 class SuperClass 
 {
@@ -45,11 +47,20 @@ int main() {
 
     wallStake stake1(blueAlliance, 0,0);
     wallStake stake2(blueAlliance, StakeCoords);
-
-    double distance = 50;
-    double velocity = 75;
     
+    double LNS; double LEW;
+    double RNS; double REW;
     while(true){
-        thisRobot.Spin(fwd, velocity, velocityUnits::pct);
+
+        LNS = Controller.Axis4.position();
+        LEW = Controller.Axis3.position();
+        RNS = Controller.Axis2.position();
+        REW = Controller.Axis1.position();
+
+        robot.drive(LNS,LEW,RNS,REW);
+
+        wait(20, msec); // Sleep the task for a short amount of time to
+                // prevent wasted resources.
+
     }
 }

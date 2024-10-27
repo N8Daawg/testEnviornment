@@ -16,6 +16,12 @@ class wheelSide
 {
 private:
     int numOfWheels;
+
+    virtual double getMotorAveWrap(){}
+    virtual void resetDrivePositionsWrap(){}
+    virtual void stopDriveSideWrap(brakeType Brake){}
+    virtual void setVelocitiesWrap(double velocity){}
+
     virtual void spinToWrap(double rotation, double velocity){}
     virtual void spinWrap(directionType dir, double velocity, velocityUnits units){}
     
@@ -26,20 +32,44 @@ public:
     int getNumOfWheels();
 
     /*---------------------------------------------------------------------------*/
+    /*-----------------------Drivetrain Utility Functions------------------------*/
+    /*---------------------------------------------------------------------------*/
+
+    /**
+     * @brief gets an average position of all motors
+    */
+    double getMotorAve(){return getMotorAveWrap();}
+
+    /**
+     * @brief resets all driveTrain encoders
+    */
+    void resetDrivePositions(){resetDrivePositionsWrap();}
+
+    /**
+     * @brief stops all motors in the drivetrain
+    */
+    void stopDriveSide(brakeType Brake){stopDriveSideWrap(Brake);}
+
+    /**
+     * @brief sets velocities of all motors in drivetrain
+    */
+    void setVelocities(double velocity){setVelocitiesWrap(velocity);}
+
+    /*---------------------------------------------------------------------------*/
     /*----------------------------DriveSide Movements----------------------------*/
     /*---------------------------------------------------------------------------*/
 
     /**
      * @brief Spins motor in a direction at a specified velocity
      */
-    void Spin(vex::directionType dir, double velocity, vex::velocityUnits units){
+    void spin(vex::directionType dir, double velocity, vex::velocityUnits units){
         spinWrap(dir, velocity, units);
     }
 
     /**
      * @brief moves drivetrain forward to a certain point
      */
-    void SpinTo(double rotation, double velocity){
+    void spinTo(double rotation, double velocity){
         spinToWrap(rotation, velocity);
     }
 };

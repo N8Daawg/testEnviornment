@@ -11,6 +11,29 @@ twoWheelSide::twoWheelSide(
 twoWheelSide::~twoWheelSide(){}
 
 /*---------------------------------------------------------------------------*/
+/*-----------------------Drivetrain Utility Functions------------------------*/
+/*---------------------------------------------------------------------------*/
+
+double twoWheelSide::getMotorAveWrap(){
+    double ave = 0;
+    if(front->position(degrees)>0){ave += front->position(degrees);
+    } else {ave -= front->position(degrees);}
+    if(back->position(degrees)>0){ave += back->position(degrees);
+    } else {ave -= back->position(degrees);}
+    return ave/getNumOfWheels();
+}
+
+void twoWheelSide::stopDriveSideWrap(brakeType Brake){
+    front->stop(brake);
+    back->stop(brake);
+}
+
+void twoWheelSide::setVelocitiesWrap(double velocity){
+    front->setVelocity(velocity, pct);
+    back->setVelocity(velocity, pct);
+}
+
+/*---------------------------------------------------------------------------*/
 /*----------------------------DriveSide Movements----------------------------*/
 /*---------------------------------------------------------------------------*/
 

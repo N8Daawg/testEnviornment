@@ -5,22 +5,27 @@
 using namespace vex;
 
 
-class robot
+class Robot
 {
 private:
     coordinate coords;
-    driveTrain* drive;
+    driveTrain* driveT;
 
 public:
-    robot(double x, double y);
-    robot(
+    Robot(double x, double y);
+    Robot(
         motor* FL,
-        motor* BL
-        );
-    ~robot();
-
-    void driveFor(double rotaion, double velocity);
-    void Spin(directionType dir, double velocity, velocityUnits units);
+        motor* FR,
+        motor* BL,
+        motor* BR,
+        inertial* Gyro,
+        double robotlength,
+        double gearratio,
+        double wheelDiameter
+    );
+    ~Robot();
+    
+    int drive(double leftNS, double leftEW, double rightNS, double rightEW);
 };
 
 #endif
