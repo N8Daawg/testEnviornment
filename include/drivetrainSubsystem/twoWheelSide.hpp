@@ -25,12 +25,13 @@ public:
     );
     ~twoWheelSide();
 
-    virtual double getMotorAveWrap();
-    virtual void stopDriveSideWrap(brakeType Brake);
-    virtual void setVelocitiesWrap(double velocity);
+    virtual double getMotorAve();
+    virtual void resetDrivePositions();
+    virtual void stopDriveSide(brakeType Brake);
+    virtual void setVelocities(double velocity);
 
-    virtual void spinToWrap(double rotation, double velocity);
-    virtual void spinWrap(directionType dir, double velocity, velocityUnits units);
+    virtual void spinTo(double rotation, double velocity);
+    virtual void spin(directionType dir, double velocity, velocityUnits units);
 };
 
 #endif

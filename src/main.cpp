@@ -23,15 +23,7 @@ Robot robot(&FrontLeft, &FrontRight, &BackLeft, &BackRight, &Gyro,
 class SuperClass 
 {
 public:
-    void bar() 
-    {
-        foo();
-    }
-private:
-    virtual void foo() // could be pure virtual, if you like
-    {
-        Brain.Screen.print("from superclass");
-    }
+    virtual void foo() = 0;
 };
 
 class SubClass : public SuperClass // do not forget to inherit public
@@ -47,7 +39,10 @@ int main() {
 
     wallStake stake1(blueAlliance, 0,0);
     wallStake stake2(blueAlliance, StakeCoords);
-    
+
+    SuperClass* test = new SubClass();
+    test->foo();
+
     double LNS; double LEW;
     double RNS; double REW;
     while(true){

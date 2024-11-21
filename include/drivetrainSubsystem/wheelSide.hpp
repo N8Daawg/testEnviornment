@@ -16,14 +16,6 @@ class wheelSide
 {
 private:
     int numOfWheels;
-
-    virtual double getMotorAveWrap(){}
-    virtual void resetDrivePositionsWrap(){}
-    virtual void stopDriveSideWrap(brakeType Brake){}
-    virtual void setVelocitiesWrap(double velocity){}
-
-    virtual void spinToWrap(double rotation, double velocity){}
-    virtual void spinWrap(directionType dir, double velocity, velocityUnits units){}
     
 public:
     wheelSide();
@@ -38,22 +30,22 @@ public:
     /**
      * @brief gets an average position of all motors
     */
-    double getMotorAve(){return getMotorAveWrap();}
+    virtual double getMotorAve() = 0;
 
     /**
      * @brief resets all driveTrain encoders
     */
-    void resetDrivePositions(){resetDrivePositionsWrap();}
+    virtual void resetDrivePositions() = 0;
 
     /**
      * @brief stops all motors in the drivetrain
     */
-    void stopDriveSide(brakeType Brake){stopDriveSideWrap(Brake);}
+    virtual void stopDriveSide(brakeType Brake) = 0;
 
     /**
      * @brief sets velocities of all motors in drivetrain
     */
-    void setVelocities(double velocity){setVelocitiesWrap(velocity);}
+    virtual void setVelocities(double velocity) = 0;
 
     /*---------------------------------------------------------------------------*/
     /*----------------------------DriveSide Movements----------------------------*/
@@ -62,16 +54,12 @@ public:
     /**
      * @brief Spins motor in a direction at a specified velocity
      */
-    void spin(vex::directionType dir, double velocity, vex::velocityUnits units){
-        spinWrap(dir, velocity, units);
-    }
+    virtual void spin(vex::directionType dir, double velocity, vex::velocityUnits units) = 0;
 
     /**
      * @brief moves drivetrain forward to a certain point
      */
-    void spinTo(double rotation, double velocity){
-        spinToWrap(rotation, velocity);
-    }
+    virtual void spinTo(double rotation, double velocity) = 0;
 };
 
 #endif
