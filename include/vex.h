@@ -8,16 +8,21 @@
 
 #include "structures.hpp"
 
-#include "robot-config.h"
 
-#include "drivetrainSubsystem/wheelSide.hpp"
-#include "drivetrainSubsystem/twoWheelSide.hpp"
-#include "drivetrainSubsystem/drivetrain.hpp"
+
+#include "drivetrainSubsystems/sensorUnit.hpp"
+
+#include "drivetrainSubsystems/wheelSide.hpp"
+#include "drivetrainSubsystems/twoWheelSide.hpp"
+#include "drivetrainSubsystems/threeWheelSide.hpp"
+#include "drivetrainSubsystems/fourWheelSide.hpp"
+#include "drivetrainSubsystems/drivetrain.hpp"
 
 #include "robotSubsystems/robot.hpp"
 
 #include "game_elements/wallStake.hpp"
 
+#include "robot-config.h"
 
 #define waitUntil(condition)                                                   \
   do {                                                                         \

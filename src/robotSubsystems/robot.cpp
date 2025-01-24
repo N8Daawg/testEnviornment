@@ -1,24 +1,14 @@
 #include "vex.h"
 using namespace vex;
 
-Robot::Robot(double x, double y) {
-    coords.x = x;
-    coords.y = y;
-    driveT = new driveTrain();
-}
 Robot::Robot(
-    motor* FL,
-    motor* FR,
-    motor* BL,
-    motor* BR,
-    inertial* Gyro,
-    double robotlength,
-    double gearratio,
-    double wheelDiameter
+    driveTrain *dt
+
 ) {
     coords.x=0;
     coords.y=0;
-    driveT = new driveTrain(FL, FR, BL, BR, Gyro, robotlength, gearratio, wheelDiameter);
+    driveT = dt;
+
 }
 
 Robot::~Robot(){}
