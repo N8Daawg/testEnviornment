@@ -4,6 +4,7 @@ using signature = vision::signature;
 extern brain Brain;
 extern controller Controller;
 
+
 // VEXcode devices
 
 // Drivetriain setup 
@@ -13,7 +14,7 @@ extern controller Controller;
 //extern motor BackRight;
 //extern inertial Gyro;
 
-extern driveTrain* drive;
+//extern driveTrain drive;
 
 extern aivision aivis;
 

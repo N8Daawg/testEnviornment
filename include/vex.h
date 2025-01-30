@@ -18,6 +18,10 @@
 #include "drivetrainSubsystems/fourWheelSide.hpp"
 #include "drivetrainSubsystems/drivetrain.hpp"
 
+#include "robotSubsystems/clamp.hpp"
+#include "robotSubsystems/intake.hpp"
+#include "robotSubsystems/conveyor.hpp"
+
 #include "robotSubsystems/robot.hpp"
 
 #include "game_elements/wallStake.hpp"

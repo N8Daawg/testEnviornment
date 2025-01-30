@@ -10,19 +10,32 @@ class Robot {
         coordinate coords;
 
         driveTrain* driveT;
-
+        clamp* mogoClamp;
+        intake* frontIntake;
+        conveyor* hookConveyor;
     public:
-
         /**
          * @brief creates a robot object to monitor, manage, and control the robots' systems
          * 
          * @param dt the drive train controller
          */
         Robot(
-            driveTrain* dt
+            driveTrain* dt,
+            clamp* MC,
+            intake* frontIntake,
+            conveyor* C
         );
+        
+        Robot();
 
         ~Robot();
+
+        void setDriveTrain(driveTrain* DT) {
+            driveT = DT;
+        }
+
+        driveTrain* getDrive() {return driveT;}
+
     
         /* Drive Controlls */
 
@@ -38,6 +51,26 @@ class Robot {
          */
         int drive(double leftNS, double leftEW, double rightNS, double rightEW);
 
+
+        /**
+         * @brief
+         */
+        void toggleMogoClamp();
+
+                /**
+         * @brief
+         */
+        void runIntake();
+
+        /**
+         * @brief
+         */
+        void runReversedIntake();
+
+        /**
+         * @brief
+         */
+        void stopIntake();
 
 };
 

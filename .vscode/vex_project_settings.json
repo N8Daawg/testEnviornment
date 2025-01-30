@@ -1,15 +1,15 @@
 {
 	"extension": {
-		"version": "0.6.0",
+		"version": "0.6.1",
 		"json": 2
 	},
 	"project": {
-		"name": "testEnviornment",
+		"name": "testingEnviornment2",
 		"description": "",
-		"creationDate": "Thu, 21 Nov 2024 23:03:57 GMT",
+		"creationDate": "1/26/2025, 9:56:48 AM",
 		"platform": "V5",
 		"language": "cpp",
-		"slot": 3,
+		"slot": 1,
 		"sdkVersion": "V5_20240802_15_00_00",
 		"cpp": {
 			"includePath": [],

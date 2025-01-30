@@ -12,6 +12,12 @@
 
 using namespace vex;
 
+enum robotConfigs {
+  big,
+  small,
+  drone,
+};
+
 /**
  *  @brief Alliance Color IDs
  */ 
