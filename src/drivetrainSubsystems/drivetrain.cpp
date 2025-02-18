@@ -10,7 +10,7 @@
 using namespace vex;
 
 driveTrain::driveTrain(){
-    sensorControler = nullptr;
+    sensors = nullptr;
 
     MotorOffset = 0;
     gearRatio = 0;
@@ -31,7 +31,7 @@ driveTrain::driveTrain(
         double gearratio,
         double wheelDiameter
 ) {
-    sensorControler = senosrs;
+    sensors = senosrs;
 
     MotorOffset = robotlength/2;
     gearRatio = gearratio;
@@ -52,7 +52,7 @@ driveTrain::driveTrain(
         double gearratio,
         double wheelDiameter
 ) {
-    sensorControler = senosrs;
+    sensors = senosrs;
 
     MotorOffset = robotlength/2;
     gearRatio = gearratio;
@@ -75,16 +75,13 @@ driveTrain::driveTrain(
         double gearratio,
         double wheelDiameter
 ) {
-    sensorControler = senosrs;
+    sensors = senosrs;
 
     MotorOffset = robotlength/2;
     gearRatio = gearratio;
     wheelCircumference = wheelDiameter*M_PI;
 
     motorConversion = gearRatio*(wheelCircumference)/(360);
-
-    Brain.Screen.print("%f * %f / 360 = %f ", gearRatio, wheelCircumference, motorConversion );
-    Brain.Screen.newLine();
 
     leftSide = new fourWheelSide(FrontLeft, FrontMiddleLeft, BackMiddleLeft, BackLeft, gearratio, wheelDiameter);
     rightSide = new fourWheelSide(FrontRight, FrontMiddleRight, BackMiddleRight, BackRight, gearratio, wheelDiameter);    
@@ -95,6 +92,43 @@ driveTrain::~driveTrain(){}
 /*---------------------------------------------------------------------------*/
 /*-----------------------Drivetrain Utility Functions------------------------*/
 /*---------------------------------------------------------------------------*/
+
+void driveTrain::autostraight(double input, double* leftspeedinput, double* rightspeedinput){
+    double dif = (leftSide->getMotorVelocity() - rightSide->getMotorVelocity());
+
+    double leftspeed = *leftspeedinput;
+    double rightspeed = *rightspeedinput;
+
+    if(input >=0) {
+        leftspeed = input - dif;
+        rightspeed = input + dif;
+
+        double max = 100;
+        if (leftspeed > max){max = leftspeed;}
+        if (rightspeed > max){max = rightspeed;}
+
+        if(max > 100){
+            leftspeed = leftspeed/max*100;
+            rightspeed = rightspeed/max*100;
+        }
+        
+    } else {
+        leftspeed = input - dif;
+        rightspeed = input + dif;
+
+        double max = -100;
+        if (leftspeed < max){max = leftspeed;}
+        if (rightspeed < max){max = rightspeed;}
+
+        if(max < -100){
+            leftspeed = leftspeed/max*-100;
+            rightspeed = rightspeed/max*-100;
+        }
+    }
+
+    *leftspeedinput = leftspeed;
+    *rightspeedinput = rightspeed;
+}
 
 
 double driveTrain::getMotorAve(){
@@ -125,7 +159,7 @@ void driveTrain::setVelocities(double velocity, velocityUnits units){
 
 void driveTrain::sidePivot(int dir, double theta, double velocity){
     resetDrivePositions();
-    bool complete = false; sensorControler->resetHeading(); double errorOffset=4;
+    bool complete = false; sensors->resetHeading(); double errorOffset=4;
     double ave; double head; double goal = theta*MotorOffset/motorConversion;
     
     while (!complete){
@@ -152,30 +186,26 @@ void driveTrain::sidePivot(int dir, double theta, double velocity){
     stopDriveTrain(hold);    
 }
 
-void driveTrain::driveStraight(int dir, double desiredPos, double velocity){
+void driveTrain::driveStraight(double velocity, double desiredPos){
 
     resetDrivePositions();
     bool complete = false; double ave; double errorOffset = 5; 
     double goal = desiredPos/motorConversion;
+
+    double dif;
+    double leftPower = 0;
+    double rightPower = 0;
     
     while(!complete){
-        switch (dir){
-        case 1: // forward movement
-            leftSide->spin(forward, velocity, velocityUnits::pct);
-            rightSide->spin(forward, velocity, velocityUnits::pct);
-            break;
-        case 2:
-            leftSide->spin(reverse, velocity, velocityUnits::pct);
-            rightSide->spin(reverse, velocity, velocityUnits::pct);
-            break;
-        default:            
-            stopDriveTrain(hold);
-            complete=true;
-            break;
-        }
+
+        autostraight(velocity, &leftPower, &rightPower);
+
+        leftSide->spin(forward, leftPower, velocityUnits::pct);
+        rightSide->spin(forward, rightPower, velocityUnits::pct);
+
         ave = getMotorAve();
+        
         if (goal-errorOffset < ave && goal+errorOffset > ave ){
-                
                 complete = true;
         }
     }
@@ -315,12 +345,12 @@ void driveTrain::drivePD(double desiredPos){
     int errorCount=0;
 
     resetDrivePositions();
-    sensorControler->resetHeading();
+    sensors->resetHeading();
 
     while(errorCount<3){
 
         progress = getMotorAve();
-        ang = sensorControler->getRotation();
+        ang = sensors->getRotation();
 
         error = goal-progress;
 
@@ -375,7 +405,7 @@ void driveTrain::gyroTurn(int dir, double desiredPos){
     int errorCount = 0;
 
     resetDrivePositions();
-    sensorControler->resetRotation();
+    sensors->resetRotation();
 
     //initial punch so gyro goes in the correct direction
     //pointTurn(dir, 75);
@@ -383,7 +413,7 @@ void driveTrain::gyroTurn(int dir, double desiredPos){
 
     while (errorCount<5){
         // calculate error
-        error = desiredPos - abs(sensorControler->getRotation());
+        error = desiredPos - abs(sensors->getRotation());
 
         // calculate derivative
         derivative = error - prev_Error;
@@ -435,6 +465,9 @@ void driveTrain::MogoRush() {
     resetDrivePositions();
     wait(20, msec);
 
+    double targetWidth = 49;
+    
+
     int errorcount = 0;
 
     double YMAX;
@@ -462,66 +495,43 @@ void driveTrain::MogoRush() {
 
 
     while (errorcount<3){
-        if (aivis.installed()) { // take snapshot for ai vision sensor
-            aivis.takeSnapshot(aivision::ALL_AIOBJS);
-        } else {
-            vis.takeSnapshot(MOGO); // take snapshot for older vision sensor
+        aivis.takeSnapshot(aivision::ALL_AIOBJS);
+        
+        double X = aivis.largestObject.centerX;
+        double Y = aivis.largestObject.width;
+
+        double speed = (Y-targetWidth)*(100/targetWidth);
+
+        if (X < (centerFOV - offsetX)) { //drift to the left
+            double drift = (centerFOV - X)/XMAX;
+            scaleR = 1 - drift;
+            scaleL = 1;
+
+        
+        } else if (X > (centerFOV + offsetX)) { // drift to the right
+            double drift = (X - centerFOV)/XMAX;
+            scaleR = 1;
+            scaleL = 1 - drift;
+        
+        } 
+
+        leftSpeed = speed*scaleL*0.4;
+        rightSpeed = speed*scaleR*0.4;
+
+        leftSide->spin(reverse, leftSpeed, velocityUnits::pct);
+        rightSide->spin(reverse, rightSpeed, velocityUnits::pct);
+        wait(30, msec);
+
+        if ((Y < targetWidth) && 
+            ((X >= (centerFOV - offsetX)) || 
+            (X <= (centerFOV + offsetX)))) {
+            errorcount++;
+            Brain.Screen.print(aivis.largestObject.width);
+            Brain.Screen.newLine();
+        
         }
 
-        if (vis.objectCount > 0){
-
-            double X; double Y;
-            if (aivis.installed()) { //mogo coordinates for ai vision sensor
-                aivision::object* mogo = findMogo();
-                X = mogo->centerX; 
-                Y = mogo->centerY;
-            } else { //mogo coordinates for older vision sensor
-                X = vis.largestObject.centerX;
-                Y = vis.largestObject.centerY;
-            }
-
-            Brain.Screen.clearScreen();
-            Brain.Screen.setCursor(1,1);
-            Brain.Screen.print("Mogo coors:");
-            Brain.Screen.newLine();
-            Brain.Screen.print("x: ");
-            Brain.Screen.print(X);
-            Brain.Screen.newLine();
-            Brain.Screen.print("y: ");
-            Brain.Screen.print(Y);
-
-            double speed = (Ytarget-Y)*(100/Ytarget);
-
-            if (X < (centerFOV - offsetX)) { //drift to the left
-                double drift = (centerFOV - X)/XMAX;
-                scaleR = 1;
-                scaleL = 1 - drift;
-
-            
-            } else if (X > (centerFOV + offsetX)) { // drift to the right
-                double drift = (X - centerFOV)/XMAX;
-                scaleR = 1;
-                scaleL = 1 - drift;
-            
-            } 
-
-            leftSpeed = speed*scaleL;
-            rightSpeed = speed*scaleR;
-
-            leftSide->spin(fwd, leftSpeed, velocityUnits::pct);
-            rightSide->spin(fwd, rightSpeed, velocityUnits::pct);
-            wait(30, msec);
-
-            if ((Y > Ytarget) && 
-                ((X >= (centerFOV - offsetX)) || 
-                (X <= (centerFOV + offsetX)))) {
-                errorcount++;
-            }
-
-        } else {
-            pointTurn(1, 20);
-            wait(30, msec);
-        }
+        //width = 49
     }
     stopDriveTrain(hold);
 }
@@ -545,21 +555,33 @@ int driveTrain::drive(double leftNS, double leftEW, double rightNS, double right
 
     } else{ //if all joystick values are outside the deadzone
         if(getControlMode() == tankDrive){
-            leftPower = leftNS + leftEW;
-            rightPower = rightNS - rightEW;
+            if(((leftNS - rightNS) < 10) && ((leftNS - rightNS) > -10)) {
+                double dif = (leftSide->getMotorVelocity() - rightSide->getMotorVelocity());
+
+                leftPower = (leftNS + leftEW) + dif;
+                rightPower = (rightNS - rightEW) - dif;
+            } else {
+                leftPower = leftNS + leftEW;
+                rightPower = rightNS - rightEW;
+            }
         } else if(getControlMode() == arcadeDrive) { 
-            leftPower = leftNS + rightEW*0.70;
-            rightPower = leftNS - rightEW*0.70;
+            if (withinDeadzone(leftEW) && withinDeadzone(rightEW)) {
+                autostraight(leftNS, &leftPower, &rightPower);  
+            } else {
+                leftPower = leftNS + rightEW;
+                rightPower = leftNS - rightEW;
+            }
+        }
+
+
+        if ((leftPower < 0) && (rightPower < 0)){
+            leftPower *= 0.5;
+            rightPower *= 0.5;
         }
 
         leftSide->spin(fwd, leftPower, velocityUnits::pct);
         rightSide->spin(fwd, rightPower, velocityUnits::pct);
     }
-
-
-    //Brain.Screen.clearLine();
-    //Brain.Screen.print("North South Odom Pod value: ");
-    //Brain.Screen.print(sensorControler->getPosNS());
 
     return 1;
 }

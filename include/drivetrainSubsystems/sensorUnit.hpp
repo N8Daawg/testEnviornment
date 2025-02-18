@@ -40,13 +40,14 @@ class sensorUnit
         ~sensorUnit();
 
         /* GYRO FUNCTIONS */
+        
         /**
          * @brief 
          */
         void resetRotation(){
             leftGyro->resetRotation();
             rightGyro->resetRotation();
-            }
+        }
 
         /**
          * @brief resets the gyroscope's heading value to 0.

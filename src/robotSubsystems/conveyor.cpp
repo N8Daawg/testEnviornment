@@ -12,11 +12,12 @@ using namespace vex;
 
 conveyor::conveyor(motor *hookDriver) {
     driver = hookDriver;
-    driver->setVelocity(100, velocityUnits::pct);
+
+    driver->setVelocity(highspeed, velocityUnits::pct);
     driver->setBrake(hold);
 
-
-    currentPos = 0;
+    cycleLength = 475;
+    loadLength = 90;
 }
 
 conveyor::~conveyor(){}
@@ -29,6 +30,32 @@ void conveyor::stop() {
     driver->stop();
 }
 
-void conveyor::loadRing() {
+void conveyor::cycleRing() {
+    int cycleLength = 475;
+    resetCycle(0);
 
+    driver->resetPosition();
+    driver->setVelocity(highspeed, velocityUnits::pct);
+    driver->spinFor(fwd, cycleLength, rotationUnits::deg, true);
+    wait(500, msec);
+}
+
+void conveyor::resetCycle(int speedtype) {
+    int remainder = cycleLength - currentPos%cycleLength;
+
+    if(speedtype==0){
+        driver->setVelocity(lowspeed, velocityUnits::pct);
+    } else {
+        driver->setVelocity(highspeed, velocityUnits::pct);
+    }
+    
+    driver->spinFor(fwd, remainder, rotationUnits::deg, true);
+}
+
+void conveyor::loadRing() {
+    driver->setVelocity(lowspeed, velocityUnits::pct);
+
+    currentPos+=loadLength;
+    driver->spinFor(fwd, loadLength, rotationUnits::deg, true);
+    wait(500, msec);
 }

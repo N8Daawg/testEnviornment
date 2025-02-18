@@ -1,42 +1,28 @@
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
-/*    Module:       conveyor.hpp                                              */
+/*    Module:       arm.hpp                                                   */
 /*    Author:       Nathan Beals                                              */
 /*    Created:      Wed Jan 22 2024                                           */
 /*    Description:  file for storing intake class code                        */
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-#ifndef CONVEYOR_HPP
-#define CONVEYOR_HPP
+#ifndef LADYBROWN_HPP
+#define LADYBROWN_HPP
 using namespace vex;
 
-class conveyor{
+class arm {
     private:
-        int currentPos;
-
-        int cycleLength;
-        int loadLength;
-
-        int highspeed = 100;
-        int lowspeed = 30;
-        
         motor* driver;
+
     public:
-        conveyor(
-            motor* hookDriver
-        );
-        ~conveyor();
+        arm(motor* ladyBrown);
+        ~arm();
 
-        void run(directionType dir);
 
+        void spin(directionType dir);
         void stop();
-
-        void cycleRing();
-        
-        void resetCycle(int speedtype);
-
-        void loadRing();
 };
+
 
 
 #endif

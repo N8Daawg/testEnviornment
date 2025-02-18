@@ -21,12 +21,14 @@
 #include "robotSubsystems/clamp.hpp"
 #include "robotSubsystems/intake.hpp"
 #include "robotSubsystems/conveyor.hpp"
+#include "robotSubsystems/arm.hpp"
 
 #include "robotSubsystems/robot.hpp"
 
 #include "game_elements/wallStake.hpp"
 
 #include "robot-config.h"
+#include "Autons.h"
 
 #define waitUntil(condition)                                                   \
   do {                                                                         \

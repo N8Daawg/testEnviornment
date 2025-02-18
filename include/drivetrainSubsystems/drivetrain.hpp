@@ -14,7 +14,6 @@ using namespace vex;
 
 class driveTrain{
     private:
-        sensorUnit* sensorControler;
 
         wheelSide* leftSide;
         wheelSide* rightSide;
@@ -24,6 +23,9 @@ class driveTrain{
         double wheelCircumference;
         double motorConversion;
         double deadzone = 5;
+
+        double leftpos;
+        double rightpos;
 
         // Classifications for User Control Modes
         enum UserControlMode {
@@ -55,6 +57,7 @@ class driveTrain{
 
 
     public:
+        sensorUnit* sensors;
 
         driveTrain();
 
@@ -116,6 +119,11 @@ class driveTrain{
         /*---------------------------------------------------------------------------*/
 
         /**
+         * @brief
+         */
+        void autostraight(double input, double* leftspeedinput, double* rightspeedinput);
+        
+        /**
          * @brief gets an average position of all motors
         */
         double getMotorAve();
@@ -143,7 +151,7 @@ class driveTrain{
          * @param dir specifies whether the robot is looking left or right
          */
         double getHeading(int dir){
-            return sensorControler->getHeading(dir);
+            return sensors->getHeading(dir);
         }
 
         /*---------------------------------------------------------------------------*/
@@ -193,7 +201,7 @@ class driveTrain{
          * @param desiredPos
          * @param velocity
          */
-        void driveStraight(int dir, double desiredPos, double velocity);
+        void driveStraight(double velocity, double desiredPos);
 
         /**
          * @brief

@@ -1,3 +1,11 @@
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*    Module:       robot-config.cpp                                          */
+/*    Author:       auto genorated                                            */
+/*    Created:      Sun Feb. 18 2024                                          */
+/*    Description:  creates global instances of all vex devices               */
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
 #include "vex.h"
 
 using namespace vex;
@@ -9,7 +17,7 @@ brain Brain;
 controller Controller;
 
 robotConfigs currentRobot = big;
-// Unique robot variables for management objects
+
 
 
 
@@ -75,7 +83,7 @@ aivision aivis = aivision(PORT5, aivision::ALL_AIOBJS);
 
 void vexcodeInit(void) {
   aivis.modelDetection(true);
-  vis.setBrightness(20);
+  //vis.setBrightness(20);
 
   driveTrain drive = driveTrain();
 

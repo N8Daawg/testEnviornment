@@ -43,6 +43,10 @@ void Robot::runIntake() {
     hookConveyor->run(fwd);
 }
 
+void Robot::runPureIntake() {
+    frontIntake->run(fwd);
+}
+
 void Robot::runReversedIntake() {
     frontIntake->run(reverse);
     hookConveyor->run(reverse);

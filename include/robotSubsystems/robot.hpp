@@ -9,11 +9,12 @@ class Robot {
     private:
         coordinate coords;
 
-        driveTrain* driveT;
-        clamp* mogoClamp;
-        intake* frontIntake;
-        conveyor* hookConveyor;
+        clamp* mogoClamp;        
     public:
+        driveTrain* driveT;
+        intake* frontIntake;
+        conveyor* hookConveyor; // for less annoying control over hook mech
+
         /**
          * @brief creates a robot object to monitor, manage, and control the robots' systems
          * 
@@ -57,10 +58,15 @@ class Robot {
          */
         void toggleMogoClamp();
 
-                /**
+        /**
          * @brief
          */
         void runIntake();
+
+        /**
+         * @brief
+         */
+        void runPureIntake();
 
         /**
          * @brief

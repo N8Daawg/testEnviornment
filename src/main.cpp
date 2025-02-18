@@ -27,11 +27,18 @@ competition Competition;
 /*---------------------------------------------------------------------------*/
 
 void pre_auton(void) {
- 
+  // Initializing Robot Configuration. DO NOT REMOVE!
+  vexcodeInit();
+  //setprogram();
+
+  if(Brain.SDcard.isInserted()){
+    Brain.Screen.drawImageFromFile("Logo2.png",0,0);
+  }
 
   // All activities that occur before the competition starts
   // Example: clearing encoders, setting servo positions, ...
 }
+
 
 /*---------------------------------------------------------------------------*/
 /*                                                                           */
@@ -50,24 +57,31 @@ void autonomous(void) {
   driveTrain* driveptr = robot.getDrive();
   driveTrain drive = *driveptr;
 
-  /*
-  drive.driveStraight(2, 5, 90);
-  robot.toggleMogoClamp();
+  bool testing = true;
+  bool bigbot = false;
+  bool match = true;
 
-  wait(500, msec);
+  //test();
 
-  robot.runIntake();
-  wait(700,msec);
+  if(testing){
+    test();
+  } else{
+    if(bigbot){
+      if(match){
+        match24();
+      } else {
+        skills24();
+      }
+    } else {
+      if(match){
+        match15();
+      } else {
+        skills15();
+      }
+    }
+  }
 
-  robot.stopIntake();
-  wait(500, msec);
 
-  drive.gyroTurn(1, 180);
-  wait(500, msec);
-
-  drive.driveStraight(1, 90, 100);
-  */
-  drive.driveStraight(1, 45, 20);
   // ..........................................................................
 }
 
